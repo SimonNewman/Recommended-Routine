@@ -1,0 +1,31 @@
+.app {
+  height: 100%;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  &.show {
+    display: flex;
+  }
+}
+
+.next-btn {
+  margin-top: auto;
+  height: 80px;
+  text-transform: uppercase;
+  font-size: 24px / $font-size * 1em;
+  letter-spacing: .05em;
+  justify-content: center;
+  position: relative;
+  &::after {
+    content: '';
+    height: 24px;
+    width: 13px;
+    background: url('images/right-arrow-white.svg') center/contain no-repeat;
+    position: absolute;
+    right: 23px;
+    top: calc(50% - 12px);
+  }
+}

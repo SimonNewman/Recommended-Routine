@@ -1,0 +1,43 @@
+// COLOURS
+// Remember to change the theme colour in header.php
+
+$primary-colour: #32B374;
+$alt-colour: #dc4f60;
+
+$dark-purple: #27213D;
+$light-purple: #39295A;
+
+$background-colour: linear-gradient(180deg, $dark-purple, $light-purple);
+
+$grey-6: #333;
+$grey-5: #4f4f4f;
+$grey-4: #828282;
+$grey-3: #bdbdbd;
+$grey-2: #e0e0e0;
+$grey-1: #f2f2f2;
+
+// TYPOGRAPHY
+
+$body-font: 'Barlow', sans-serif;
+$heading-font: 'Barlow', sans-serif;
+
+$body-regular: 400;
+$body-bold: 700;
+
+$heading-regular: 400;
+
+$font-colour: #fff;
+
+$font-size: 16px;
+$font-size-mobile: 14px;
+
+
+// SECTIONS
+
+$section: 1200px;
+$section-narrow: 1000px;
+$section-wide: 1400px;
+
+$section-padding: 25px;
+
+$ease: ease-in-out;

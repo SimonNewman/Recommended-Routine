@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <div class="app">
+
+      <div class="screen welcome show">
+        <h2>Welcome</h2>
+        <button class="next-btn" onclick="displayScreen('stretches')">Start Workout</button>
+      </div>
+
+      <div class="screen stretches">
+        <h2>Dynamic Stretches</h2>
+        <p>Complete 5-10 reps of each of these streteches and then click continue</p>
+        <ul>
+          <li>Shoulder Rolls</li>
+          <li>Scapular Shrugs</li>
+          <li>Cat-Camels</li>
+          <li>Band: Straight Arm Overhead Pull Downs</li>
+          <li>Band: Straight Arm Chest Flies</li>
+          <li>Band: Dislocates</li>
+          <li>Wrist Mobility Exercises</li>
+          <li>Front / Side Leg Swings</li>
+        </ul>
+        <button class="next-btn" onclick="displayScreen('bodyline')">Continue</button>
+      </div>
+
+      <div class="screen bodyline">
+        <h2>Bodyline Work</h2>
+        <h3 class="exercise-name"></h3>
+        <div class="timer">
+          <div class="timer-down">Down</div>
+          <div class="timer-value"></div>
+          <div class="timer-up">Up</div>
+        </div>
+        <button class="next-btn">Done</button>
+      </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
+    <script src="routine.min.js" charset="utf-8"></script>
+  </body>
+</html>

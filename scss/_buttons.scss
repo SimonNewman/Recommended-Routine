@@ -1,0 +1,26 @@
+.btn,
+button {
+  display: inline-flex;
+  padding: 15px 20px;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: $body-regular;
+  text-decoration: none;
+  background: $primary-colour;
+  line-height: 1.2;
+  cursor: pointer;
+  font-family: $body-font;
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+  &:hover {
+    color: #fff;
+    background: $alt-colour;
+  }
+  &.btn-alt {
+    background: $alt-colour;
+    &:hover {
+      background: $primary-colour;
+    }
+  }
+}
