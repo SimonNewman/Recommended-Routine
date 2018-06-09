@@ -6,7 +6,7 @@ button {
   font-size: 1.1em;
   font-weight: $body-regular;
   text-decoration: none;
-  background: $primary-colour;
+  background: $green;
   line-height: 1.2;
   cursor: pointer;
   font-family: $body-font;
@@ -15,12 +15,12 @@ button {
   }
   &:hover {
     color: #fff;
-    background: $alt-colour;
+    background: $primary-colour;
   }
   &.btn-alt {
-    background: $alt-colour;
+    background: $primary-colour;
     &:hover {
-      background: $primary-colour;
+      background: $green;
     }
   }
 }

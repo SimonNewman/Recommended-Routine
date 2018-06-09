@@ -1,5 +1,6 @@
 let data = null;
-let currentScreen = 'welcome';
+//let currentScreen = 'welcome';
+let currentScreen = 'bodyline';
 const defaultTimer = 10;
 const apiUrl = 'https://www.jsonstore.io/9d567715b95df4d04c185c008ad8699c3e362940430a2ca7494aaefad073403e';
 const bodyline = [
@@ -28,6 +29,8 @@ const bodyline = [
     name: 'Arch Hold'
   }
 ];
+
+displayScreen(currentScreen);
 
 function displayScreen(screen) {
   $('.screen:not(.' + screen + ')').hide();

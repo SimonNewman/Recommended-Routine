@@ -37,3 +37,44 @@
     top: calc(50% - 12px);
   }
 }
+
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .timer-value {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background: $primary-colour;
+    background: linear-gradient(90deg, darken($light-purple, 10%), $light-purple);
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    font-size: 4em;
+    margin: 0 20px;
+    border: 1px solid lighten($light-purple, 5%);
+    position: relative;
+    &::after {
+      content: 'seconds';
+      position: absolute;
+      bottom: -100px;
+      font-size: .8rem;
+      left: 50%;
+      opacity: .7;
+      transform: translateX(-50%);
+    }
+  }
+  .timer-down,
+  .timer-up {
+    height: 50px;
+    width: 50px;
+    opacity: .8;
+  }
+  .timer-up {
+    background: url('images/timer-up.svg') center/contain no-repeat;
+  }
+  .timer-down {
+    background: url('images/timer-down.svg') center/contain no-repeat;
+  }
+}
