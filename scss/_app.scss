@@ -10,7 +10,6 @@
   height: calc(100vh - 70px);
   display: none;
   flex-direction: column;
-  justify-content: space-between;
   padding: 20px 30px;
   &.show {
     display: flex;
@@ -89,10 +88,12 @@
 .completed-message {
   text-align: center;
   color: $grey-1;
+  display: none;
 }
 
 .timer {
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
   height: 150px;
@@ -127,6 +128,10 @@
     height: 50px;
     width: 50px;
     opacity: .8;
+    cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
   }
   .timer-up {
     background: url('images/timer-up.svg') center/contain no-repeat;

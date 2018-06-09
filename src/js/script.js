@@ -1,6 +1,8 @@
 let data = null;
 //let currentScreen = 'welcome';
 let currentScreen = 'bodyline';
+let exerciseNumber,
+    seconds;
 let doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
 doneSound.loop = false;
 
@@ -51,6 +53,7 @@ function setupScreen(screen) {
 
 function setupBodylineExercise(i) {
   if (!i) i = 0;
+  exerciseNumber = i;
   let count = bodyline.length;
   if (i < count) {
     $('.exercise-name').html(bodyline[i].name);
@@ -60,6 +63,13 @@ function setupBodylineExercise(i) {
     } else {
       $('.timer-value').html(defaultTimer);
     }
+    $('.times-up').hide();
+    $('.bodyline .completed-message').hide();
+    $('.bodyline .timer-up, .bodyline .timer-down, .bodyline .timer-value').show();
+    $('.bodyline .completed').removeClass('show');
+    $('.bodyline .next-btn').addClass('show');
+  } else {
+    setupScreen
   }
 }
 
@@ -103,15 +113,16 @@ $('.timer-up').click(function(){
 
 $('.bodyline .next-btn').click(function(){
   $(this).removeClass('show');
-  $('.bodyline .completed').addClass('show');
   $('.bodyline .timer-up, .bodyline .timer-down').hide();
-  let seconds = parseInt($('.bodyline .timer-value').html());
+  seconds = parseInt($('.bodyline .timer-value').html());
   let secondsLeft = seconds;
   let timer = setInterval(function(){
     if (secondsLeft > 1) {
       secondsLeft--;
       $('.bodyline .timer-value').html(secondsLeft);
     } else {
+      $('.bodyline .completed-message').show();
+      $('.bodyline .completed').addClass('show');
       doneSound.play();
       $('.bodyline .timer-value').hide();
       $('.bodyline .times-up').show();
@@ -119,4 +130,14 @@ $('.bodyline .next-btn').click(function(){
     }
   },
   1000);
+});
+
+$('.bodyline .yes-btn').click(function(){
+  saveExercise(currentExercise, seconds, true);
+  setupBodylineExercise(++exerciseNumber);
+});
+
+$('.bodyline .no-btn').click(function(){
+  saveExercise(currentExercise, seconds, false);
+  setupBodylineExercise(++exerciseNumber);
 });
