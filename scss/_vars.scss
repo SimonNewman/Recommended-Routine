@@ -1,13 +1,15 @@
 // COLOURS
 // Remember to change the theme colour in header.php
 
-$primary-colour: #32B374;
-$alt-colour: #dc4f60;
+$primary-colour: #4CA0E3;
+$alt-colour: #D35688;
 
-$dark-purple: #27213D;
-$light-purple: #39295A;
+$alt-2: #9B7DEF;
 
-$background-colour: linear-gradient(180deg, $dark-purple, $light-purple);
+$dark-purple: #282834;
+$light-purple: #55566A;
+
+$background-colour: linear-gradient(135deg, $dark-purple, $light-purple);
 
 $grey-6: #333;
 $grey-5: #4f4f4f;
@@ -26,7 +28,7 @@ $body-bold: 700;
 
 $heading-regular: 400;
 
-$font-colour: #fff;
+$font-colour: #828191;
 
 $font-size: 16px;
 $font-size-mobile: 14px;
