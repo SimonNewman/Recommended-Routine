@@ -10,7 +10,7 @@
   height: calc(100vh - 70px);
   display: none;
   flex-direction: column;
-  height: 100%;
+  justify-content: space-between;
   padding: 20px 30px;
   &.show {
     display: flex;
@@ -27,6 +27,10 @@
   font-size: 24px / $font-size * 1em;
   letter-spacing: .05em;
   justify-content: center;
+  display: none;
+  &.show {
+    display: inline-flex;
+  }
   &::after {
     content: '';
     height: 24px;
@@ -38,16 +42,67 @@
   }
 }
 
+.completed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  display: none;
+  &.show {
+    display: flex;
+  }
+  .yes-btn,
+  .no-btn {
+    text-transform: uppercase;
+    font-size: 24px / $font-size * 1em;
+    letter-spacing: .05em;
+    justify-content: center;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    &::after {
+      content: '';
+      /*position: absolute;
+      right: 23px;
+      top: calc(50% - 12px);*/
+    }
+  }
+  .yes-btn {
+    background: $green;
+    &::after {
+      height: 24px;
+      width: 24px;
+      background: url('images/tick.svg') center/contain no-repeat;
+    }
+  }
+  .no-btn {
+    background: $red;
+    &::after {
+      height: 18px;
+      width: 18px;
+      background: url('images/cross.svg') center/contain no-repeat;
+    }
+  }
+}
+
+.completed-message {
+  text-align: center;
+  color: $grey-1;
+}
+
 .timer {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 150px;
   .timer-value {
+    font-family: $mono-font;
     height: 150px;
     width: 150px;
     border-radius: 50%;
     background: $primary-colour;
-    background: linear-gradient(90deg, darken($light-purple, 10%), $light-purple);
+    background: darken($light-purple, 5%);
     color: #fff;
     text-align: center;
     line-height: 150px;
@@ -55,13 +110,15 @@
     margin: 0 20px;
     border: 1px solid lighten($light-purple, 5%);
     position: relative;
+    letter-spacing: -.03em;
     &::after {
       content: 'seconds';
+      letter-spacing: 0;
       position: absolute;
       bottom: -100px;
       font-size: .8rem;
       left: 50%;
-      opacity: .7;
+      opacity: .6;
       transform: translateX(-50%);
     }
   }
@@ -76,5 +133,15 @@
   }
   .timer-down {
     background: url('images/timer-down.svg') center/contain no-repeat;
+  }
+  .times-up {
+    height: 150px;
+    line-height: 150px;
+    font-size: 2.5em;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: $grey-1;
+    text-align: center;
+    display: none;
   }
 }

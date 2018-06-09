@@ -1,6 +1,10 @@
 let data = null;
 //let currentScreen = 'welcome';
 let currentScreen = 'bodyline';
+let doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
+doneSound.loop = false;
+
+let currentExercise;
 const defaultTimer = 10;
 const apiUrl = 'https://www.jsonstore.io/9d567715b95df4d04c185c008ad8699c3e362940430a2ca7494aaefad073403e';
 const bodyline = [
@@ -50,6 +54,7 @@ function setupBodylineExercise(i) {
   let count = bodyline.length;
   if (i < count) {
     $('.exercise-name').html(bodyline[i].name);
+    currentExercise = bodyline[i].id;
     if (getLastSet(bodyline[i].id)) {
       $('.timer-value').html(getLastSet(bodyline[i].id));
     } else {
@@ -58,11 +63,12 @@ function setupBodylineExercise(i) {
   }
 }
 
-function saveExercise(exercise, timeReps) {
+function saveExercise(exercise, timeReps, completed) {
   let newData = [];
   let exerciseData = {
     date: new Date().getTime(),
-    timeReps: timeReps
+    timeReps: timeReps,
+    completed: completed
   };
   let savedData = JSON.parse(localStorage.getItem(exercise));
   if (savedData !== null) {
@@ -95,6 +101,22 @@ $('.timer-up').click(function(){
   $(this).prev('.timer-value').html(parseInt(currentTimer) + 1);
 });
 
-$('.bodyline .done').click(function(){
-
+$('.bodyline .next-btn').click(function(){
+  $(this).removeClass('show');
+  $('.bodyline .completed').addClass('show');
+  $('.bodyline .timer-up, .bodyline .timer-down').hide();
+  let seconds = parseInt($('.bodyline .timer-value').html());
+  let secondsLeft = seconds;
+  let timer = setInterval(function(){
+    if (secondsLeft > 1) {
+      secondsLeft--;
+      $('.bodyline .timer-value').html(secondsLeft);
+    } else {
+      doneSound.play();
+      $('.bodyline .timer-value').hide();
+      $('.bodyline .times-up').show();
+      clearInterval(timer);
+    }
+  },
+  1000);
 });
