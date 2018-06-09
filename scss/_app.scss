@@ -132,6 +132,9 @@
     &:hover {
       opacity: 1;
     }
+    &:focus {
+      outline: none;
+    }
   }
   .timer-up {
     background: url('images/timer-up.svg') center/contain no-repeat;
