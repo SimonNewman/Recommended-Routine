@@ -46,15 +46,9 @@ function displayScreen(screen) {
 }
 
 function setupScreen(screen) {
-  if (screen === 'welcome') {
-    setupWelcomeScreen();
-  } elseif (screen === 'bodyline') {
+  if (screen === 'bodyline') {
     setupBodylineExercise();
   }
-}
-
-function setupWelcomeScreen() {
-  $('.welcome .next-btn').addClass('show');
 }
 
 function setupBodylineExercise(i) {
@@ -62,14 +56,14 @@ function setupBodylineExercise(i) {
   exerciseNumber = i;
   let count = bodyline.length;
   if (i < count) {
-    $('.exercise-name').html(bodyline[i].name);
+    $('.bodyline .exercise-name').html(bodyline[i].name);
     currentExercise = bodyline[i].id;
     if (getLastSet(bodyline[i].id)) {
-      $('.timer-value').html(getLastSet(bodyline[i].id));
+      $('.bodyline .timer-value').html(getLastSet(bodyline[i].id));
     } else {
-      $('.timer-value').html(defaultTimer);
+      $('.bodyline .timer-value').html(defaultTimer);
     }
-    $('.times-up').hide();
+    $('.bodyline .times-up').hide();
     $('.bodyline .completed-message').hide();
     $('.bodyline .timer-up, .bodyline .timer-down, .bodyline .timer-value').show();
     $('.bodyline .completed').removeClass('show');
