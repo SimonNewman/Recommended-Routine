@@ -28,7 +28,7 @@ gulp.task('svgo', function(){
 gulp.task('watch', function(){
   gulp.watch('scss/*.scss', ['sass']);
   gulp.watch('src/img/*.svg', ['svgo']);
-  gulp.watch('src/js/*.js', ['scripts']);
+  //gulp.watch('src/js/*.js', ['scripts']);
 });
 
 gulp.task('scripts', function() {

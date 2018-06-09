@@ -1,6 +1,6 @@
 let data = null;
-//let currentScreen = 'welcome';
-let currentScreen = 'bodyline';
+let currentScreen = 'welcome';
+//let currentScreen = 'bodyline';
 let exerciseNumber,
     seconds;
 let doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
@@ -46,9 +46,15 @@ function displayScreen(screen) {
 }
 
 function setupScreen(screen) {
-  if (screen === 'bodyline') {
+  if (screen === 'welcome') {
+    setupWelcomeScreen();
+  } elseif (screen === 'bodyline') {
     setupBodylineExercise();
   }
+}
+
+function setupWelcomeScreen() {
+  $('.welcome .next-btn').addClass('show');
 }
 
 function setupBodylineExercise(i) {
@@ -69,7 +75,7 @@ function setupBodylineExercise(i) {
     $('.bodyline .completed').removeClass('show');
     $('.bodyline .next-btn').addClass('show');
   } else {
-    setupScreen
+    //setupScreen
   }
 }
 
