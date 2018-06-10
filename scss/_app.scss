@@ -2,6 +2,18 @@
   height: 100%;
 }
 
+* {
+  outline: none;
+  &:focus,
+  &.active {
+    outline: none;
+  }
+}
+
+.exercise-name {
+  margin-bottom: 20px;
+}
+
 .screen {
   position: fixed;
   top: 0;
@@ -132,9 +144,6 @@
     &:hover {
       opacity: 1;
     }
-    &:focus {
-      outline: none;
-    }
   }
   .timer-up {
     background: url('images/timer-up.svg') center/contain no-repeat;
@@ -151,5 +160,39 @@
     color: $grey-1;
     text-align: center;
     display: none;
+  }
+}
+
+.progression-container {
+  position: relative;
+  &::after {
+    content: '';
+    height: 24px;
+    width: 10px;
+    background: url('images/right-arrow-white.svg') center/contain no-repeat;
+    position: absolute;
+    right: 23px;
+    top: calc(50% - 12px);
+    transform: rotate(90deg);
+  }
+}
+
+.progression-message {
+  font-size: .8rem;
+  margin-bottom: 5px;
+}
+
+.progression {
+  background: none;
+  width: 100%;
+  border: 1px solid $light-purple;
+  font-size: 1.1em;
+  color: #fff;
+  font-family: $body-font;
+  padding: 12px 15px;
+  -webkit-appearance: none;
+  color: $grey-2;
+  option {
+    background: $light-purple;
   }
 }
