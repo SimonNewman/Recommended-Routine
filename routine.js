@@ -278,6 +278,7 @@ function setupStrengthExercise(i) {
         html += ' <span>' + lastSets.timeReps[x] + '</span>';
       }
       $('.last-sets').html(html);
+
     }
     $('.strength .exercise-name').html(getExerciseName(strengthRoutine[i]));
     currentExercise = bodyline[i].id;
@@ -286,7 +287,7 @@ function setupStrengthExercise(i) {
     } else {
       $('.strength .timer-value').html(defaultTimer);
     }
-    $('.strength .timer').hide();
+    //$('.strength .timer').hide();
     $('.strength .completed-message').hide();
     $('.strength .timer-up, .strength .timer-down, .strength .timer-value').show();
     $('.strength .completed').removeClass('show');

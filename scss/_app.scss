@@ -134,6 +134,9 @@
       opacity: .6;
       transform: translateX(-50%);
     }
+    &.reps::after {
+      content: 'reps';
+    }
   }
   .timer-down,
   .timer-up {
