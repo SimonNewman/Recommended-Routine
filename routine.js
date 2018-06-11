@@ -1,15 +1,17 @@
 let data = null;
 //let currentScreen = 'welcome';
+//let currentScreen = 'bodyline';
 let currentScreen = 'strength';
 let exerciseNumber,
     seconds,
-    currentSets = [];
-let doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
+    currentSets = [],
+    currentExercise,
+    doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
 doneSound.loop = false;
 
-let currentExercise;
+
 const defaultTimer = 10;
-const apiUrl = 'https://www.jsonstore.io/9d567715b95df4d04c185c008ad8699c3e362940430a2ca7494aaefad073403e';
+const defaultReps = [5,5,5];
 const bodyline = [
   {
     id: 'plank',
@@ -47,7 +49,7 @@ const strength = [
         name: 'Pull-up Negative'
       },
       {
-        id: 'pull-up-',
+        id: 'pull-up',
         name: 'Pull-up'
       },
       {
@@ -225,16 +227,11 @@ const strengthRoutine = [
   'row'
 ];
 
-displayScreen(currentScreen);
-
+// Display screen
 function displayScreen(screen) {
   $('.screen:not(.' + screen + ')').hide();
   $('.screen.' + screen).show().css('display', 'flex');
   currentScreen = screen;
-  setupScreen(screen);
-}
-
-function setupScreen(screen) {
   if (screen === 'bodyline') {
     setupBodylineExercise();
   } else if (screen === 'strength') {
@@ -242,6 +239,7 @@ function setupScreen(screen) {
   }
 }
 
+// Setup new bodyline exercise
 function setupBodylineExercise(i) {
   if (!i) i = 0;
   exerciseNumber = i;
@@ -264,13 +262,23 @@ function setupBodylineExercise(i) {
   }
 }
 
+// Setup new strength exercise
 function setupStrengthExercise(i) {
   if (!i) i = 0;
   exerciseNumber = i;
   let count = strengthRoutine.length;
   if (i < count) {
     setupProgression(strengthRoutine[i]);
-
+    let lastSets = getLastSet(strengthRoutine[i]);
+    if (lastSets) {
+      let lastProgression = getProgression(lastSets.progression);
+      let html = 'Last time: ';
+      html += lastProgression.name;
+      for (var x = 0; x < lastSets.timeReps.length; x++) {
+        html += ' <span>' + lastSets.timeReps[x] + '</span>';
+      }
+      $('.last-sets').html(html);
+    }
     $('.strength .exercise-name').html(getExerciseName(strengthRoutine[i]));
     currentExercise = bodyline[i].id;
     if (getLastSet(bodyline[i].id)) {
@@ -278,7 +286,7 @@ function setupStrengthExercise(i) {
     } else {
       $('.strength .timer-value').html(defaultTimer);
     }
-    $('.strength .times-up').hide();
+    $('.strength .timer').hide();
     $('.strength .completed-message').hide();
     $('.strength .timer-up, .strength .timer-down, .strength .timer-value').show();
     $('.strength .completed').removeClass('show');
@@ -288,9 +296,11 @@ function setupStrengthExercise(i) {
   }
 }
 
+// Populate drop down with progression options
+// Pass in exercise id
 function setupProgression(id) {
   $('.strength .progression').html('');
-  let progression = getProgression(id);
+  let progression = getProgressions(id);
   let html = '';
   for (var i = 0; i < progression.length; i++) {
     html += '<option value="' + progression[i].id + '">' + progression[i].name + '</option>';
@@ -298,6 +308,7 @@ function setupProgression(id) {
   $('.strength .progression').append(html);
 }
 
+// Get exercise from exercise id
 function getExerciseName(id) {
   for (var i = 0; i < strength.length; i++) {
     if (id === strength[i].id) {
@@ -306,7 +317,8 @@ function getExerciseName(id) {
   }
 }
 
-function getProgression(id) {
+// Get progressions from exercise id
+function getProgressions(id) {
   for (var i = 0; i < strength.length; i++) {
     if (id === strength[i].id) {
       return strength[i].progression;
@@ -314,6 +326,25 @@ function getProgression(id) {
   }
 }
 
+// Get progression from progression id
+function getProgression(id) {
+  let progression = {};
+  for (var i = 0; i < strength.length; i++) {
+    $.each(strength[i].progression, function(x){
+      if (this.id === id) {
+        progression = this;
+      }
+    });
+  }
+  return progression;
+}
+
+// Save exercise to local storage
+/* exercise    = Exercise id
+   timeReps    = Time inseconds (int) or sets (arr) eg. [5,4,4]
+   completed   = Whether bodyline exercise was completed (bool). Set as true if strength exercise
+   progression = Progression id (int)
+*/
 function saveExercise(exercise, timeReps, completed, progression) {
   let newData = [];
   if (!progression) {
@@ -335,6 +366,7 @@ function saveExercise(exercise, timeReps, completed, progression) {
   localStorage.setItem(exercise, JSON.stringify(newData));
 }
 
+// Get last set from exercise id
 function getLastSet(exercise) {
   let savedData = JSON.parse(localStorage.getItem(exercise));
   if (savedData !== null) {
@@ -343,6 +375,29 @@ function getLastSet(exercise) {
     return false;
   }
 }
+
+// Calculate next sets based on previous sets (arr) eg. [5,4,4]
+function calculateSets(previousSets) {
+  let totalReps = 1;
+  const sets = 3;
+  let newSets = [];
+  for (var i = 0; i < previousSets.length; i++) {
+    totalReps = totalReps + previousSets[i];
+  }
+  let averageReps = Math.floor(totalReps / sets);
+  let leftOverReps = totalReps - (sets * averageReps);
+  for (var i = 0; i < sets; i++) {
+    newSets.push(averageReps);
+  }
+  for (var i = 0; i < leftOverReps; i++) {
+    newSets[i] = newSets[i] + 1;
+  }
+  return newSets;
+}
+
+displayScreen(currentScreen);
+
+/** === Event Listeners === **/
 
 $('.timer-down').click(function(){
   let currentTimer = $(this).next('.timer-value').html();
