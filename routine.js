@@ -6,12 +6,14 @@ let exerciseNumber,
     seconds,
     currentSets = [],
     currentExercise,
+    setsCompleted = [],
+    rest = 2,
     doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
 doneSound.loop = false;
 
 
 const defaultTimer = 10;
-const defaultReps = [5,5,5];
+const defaultReps = 5;
 const bodyline = [
   {
     id: 'plank',
@@ -264,6 +266,8 @@ function setupBodylineExercise(i) {
 
 // Setup new strength exercise
 function setupStrengthExercise(i) {
+  let setNumber = 0;
+
   if (!i) i = 0;
   exerciseNumber = i;
   let count = strengthRoutine.length;
@@ -278,22 +282,35 @@ function setupStrengthExercise(i) {
         html += ' <span class="rep">' + lastSets.timeReps[x] + '</span>';
       }
       $('.last-sets').html(html);
-
+      $('.last-sets').show();
+    } else {
+      $('.last-sets').hide();
     }
     $('.strength .exercise-name').html(getExerciseName(strengthRoutine[i]));
-    currentExercise = bodyline[i].id;
-    if (getLastSet(bodyline[i].id)) {
-      $('.strength .timer-value').html(getLastSet(bodyline[i].id));
+
+    setNumber = getSetNumber(strengthRoutine[i]);
+
+    if (lastSets) {
+      $('.strength .timer-value').html(lastSets.timeReps[setNumber]);
     } else {
-      $('.strength .timer-value').html(defaultTimer);
+      $('.strength .timer-value').html(defaultReps);
     }
-    //$('.strength .timer').hide();
+
     $('.strength .completed-message').hide();
     $('.strength .timer-up, .strength .timer-down, .strength .timer-value').show();
     $('.strength .completed').removeClass('show');
     $('.strength .next-btn').addClass('show');
   } else {
-    // Done
+    setupScreen('done');
+  }
+}
+
+// Returns the current set number of an exercise
+function getSetNumber(exercise) {
+  if (setsCompleted[exercise]) {
+    return setsCompleted[exercise];
+  } else {
+    return 0;
   }
 }
 
@@ -427,6 +444,29 @@ $('.bodyline .next-btn').click(function(){
       doneSound.play();
       $('.bodyline .timer-value').hide();
       $('.bodyline .times-up').show();
+      clearInterval(timer);
+    }
+  },
+  1000);
+});
+
+$('.strength .next-btn').click(function(){
+  $(this).removeClass('show');
+  $('.strength .timer-up, .strength .timer-down').hide();
+  seconds = rest;
+  let secondsLeft = seconds;
+  $('.strength .timer-value').removeClass('reps');
+  $('.strength .timer-value').html(rest);
+  let timer = setInterval(function(){
+    if (secondsLeft > 1) {
+      secondsLeft--;
+      $('.strength .timer-value').html(secondsLeft);
+    } else {
+      setupStrengthExercise(++exerciseNumber);
+      $('.strength .timer-value').addClass('reps');
+      $('.strength .completed-message').show();
+      $('.strength .completed').addClass('show');
+      doneSound.play();
       clearInterval(timer);
     }
   },
