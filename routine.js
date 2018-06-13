@@ -272,10 +272,10 @@ function setupStrengthExercise(i) {
     let lastSets = getLastSet(strengthRoutine[i]);
     if (lastSets) {
       let lastProgression = getProgression(lastSets.progression);
-      let html = 'Last time: ';
-      html += lastProgression.name;
+      let html = 'Last time:';
+      html += '<span class="progression-name">' + lastProgression.name + '</span>';
       for (var x = 0; x < lastSets.timeReps.length; x++) {
-        html += ' <span>' + lastSets.timeReps[x] + '</span>';
+        html += ' <span class="rep">' + lastSets.timeReps[x] + '</span>';
       }
       $('.last-sets').html(html);
 
