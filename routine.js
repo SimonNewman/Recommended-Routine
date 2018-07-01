@@ -7,13 +7,13 @@ let exerciseNumber,
     currentSets = [],
     currentExercise,
     setsCompleted = [],
-    rest = 2,
+    rest = 90,
     doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
 doneSound.loop = false;
 
 
 const defaultTimer = 10;
-const defaultReps = 2;
+const defaultReps = 5;
 const bodyline = [
   {
     id: 'plank',
