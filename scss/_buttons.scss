@@ -10,17 +10,4 @@ button {
   line-height: 1.2;
   cursor: pointer;
   font-family: $body-font;
-  &:hover {
-    color: #fff;
-    background: $primary-colour;
-  }
-  &:focus {
-    outline: none;
-  }
-  &.btn-alt {
-    background: $primary-colour;
-    &:hover {
-      background: $green;
-    }
-  }
 }

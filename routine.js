@@ -13,7 +13,7 @@ doneSound.loop = false;
 
 
 const defaultTimer = 10;
-const defaultReps = 5;
+const defaultReps = 2;
 const bodyline = [
   {
     id: 'plank',
@@ -260,7 +260,7 @@ function setupBodylineExercise(i) {
     $('.bodyline .completed').removeClass('show');
     $('.bodyline .next-btn').addClass('show');
   } else {
-    setupScreen('strength');
+    displayScreen('strength');
   }
 }
 
@@ -270,13 +270,14 @@ function setupStrengthExercise(i) {
 
   if (!i) i = 0;
   exerciseNumber = i;
+  currentExercise = strengthRoutine[i];
   let count = strengthRoutine.length;
   if (i < count) {
     setupProgression(strengthRoutine[i]);
-    let lastSets = getLastSet(strengthRoutine[i]);
+    let lastSets = getLastSet(currentExercise);
     if (lastSets) {
       let lastProgression = getProgression(lastSets.progression);
-      let html = 'Last time:';
+      let html = 'Last workout:';
       html += '<span class="progression-name">' + lastProgression.name + '</span>';
       for (var x = 0; x < lastSets.timeReps.length; x++) {
         html += ' <span class="rep">' + lastSets.timeReps[x] + '</span>';
@@ -286,12 +287,13 @@ function setupStrengthExercise(i) {
     } else {
       $('.last-sets').hide();
     }
-    $('.strength .exercise-name').html(getExerciseName(strengthRoutine[i]));
 
-    setNumber = getSetNumber(strengthRoutine[i]);
+    $('.strength .exercise-name').html(getExerciseName(currentExercise));
+
+    setNumber = getSetNumber(currentExercise);
 
     if (lastSets) {
-      $('.strength .timer-value').html(lastSets.timeReps[setNumber]);
+      $('.strength .timer-value').html(calculateSets(lastSets.timeReps)[setNumber]);
     } else {
       $('.strength .timer-value').html(defaultReps);
     }
@@ -301,14 +303,14 @@ function setupStrengthExercise(i) {
     $('.strength .completed').removeClass('show');
     $('.strength .next-btn').addClass('show');
   } else {
-    setupScreen('done');
+    displayScreen('done');
   }
 }
 
 // Returns the current set number of an exercise
 function getSetNumber(exercise) {
   if (setsCompleted[exercise]) {
-    return setsCompleted[exercise];
+    return setsCompleted[exercise].reps.length;
   } else {
     return 0;
   }
@@ -317,6 +319,10 @@ function getSetNumber(exercise) {
 // Populate drop down with progression options
 // Pass in exercise id
 function setupProgression(id) {
+  let disableProgressionSelect = false;
+  if (setsCompleted[id]) {
+    disableProgressionSelect = true;
+  }
   $('.strength .progression').html('');
   let progression = getProgressions(id);
   let html = '';
@@ -324,6 +330,12 @@ function setupProgression(id) {
     html += '<option value="' + progression[i].id + '">' + progression[i].name + '</option>';
   }
   $('.strength .progression').append(html);
+  $('.progression-message').show();
+  if (disableProgressionSelect) {
+    $('.strength .progression').prop('disabled', 'disabled');
+    $('.strength .progression').addClass('disabled');
+    $('.progression-message').hide();
+  }
 }
 
 // Get exercise from exercise id
@@ -413,6 +425,21 @@ function calculateSets(previousSets) {
   return newSets;
 }
 
+// Keep log of completed strength sets
+// If sets are completed, save sets to storage
+function logSet(progression, reps) {
+  if (progression) {
+    setsCompleted[currentExercise] = {
+      'progression': progression,
+      'reps': []
+    }
+  }
+  setsCompleted[currentExercise].reps.push(reps);
+  if (setsCompleted[currentExercise].reps.length === 3) {
+    saveExercise(currentExercise, setsCompleted[currentExercise].reps, true, setsCompleted[currentExercise].progression);
+  }
+}
+
 displayScreen(currentScreen);
 
 /** === Event Listeners === **/
@@ -451,12 +478,20 @@ $('.bodyline .next-btn').click(function(){
 });
 
 $('.strength .next-btn').click(function(){
+  let progression = false;
+
+  if (!$('select.progression').hasClass('disabled')) {
+    progression = $('select.progression option:selected').val();
+  }
+  logSet(progression, parseInt($('.reps').html()));
+
   $(this).removeClass('show');
   $('.strength .timer-up, .strength .timer-down').hide();
   seconds = rest;
   let secondsLeft = seconds;
   $('.strength .timer-value').removeClass('reps');
   $('.strength .timer-value').html(rest);
+
   let timer = setInterval(function(){
     if (secondsLeft > 1) {
       secondsLeft--;

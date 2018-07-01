@@ -168,11 +168,7 @@
   .timer-up {
     height: 50px;
     width: 50px;
-    opacity: .8;
     cursor: pointer;
-    &:hover {
-      opacity: 1;
-    }
   }
   .timer-up {
     background: url('images/timer-up.svg') center/contain no-repeat;
