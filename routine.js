@@ -1,7 +1,7 @@
 let data = null;
 let currentScreen = 'welcome';
 //let currentScreen = 'bodyline';
-let currentScreen = '//';
+//let currentScreen = 'strength';
 let exerciseNumber,
     seconds,
     currentSets = [],
