@@ -517,3 +517,14 @@ $('.bodyline .no-btn').click(function(){
   saveExercise(currentExercise, seconds, false);
   setupBodylineExercise(++exerciseNumber);
 });
+
+function showData() {
+  $('.data').html(JSON.stringify(localStorage));
+}
+
+function deleteData() {
+  let r = confirm("Are you sure you want to delete all data?");
+  if (r) {
+    localStorage.clear();
+  }
+}

@@ -5,7 +5,7 @@
     <title>Recommended Routine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,500" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.22">
+    <link rel="stylesheet" href="style.css?v=1.23">
   </head>
   <body>
 
@@ -13,6 +13,10 @@
 
       <div class="screen welcome">
         <h2>Welcome</h2>
+        <button onclick="showData()">View Data</button>
+        <br>
+        <button onclick="deleteData()">Delete Data</button>
+        <div class="data"></div>
         <button class="next-btn show" onclick="displayScreen('stretches')">Start Workout</button>
       </div>
 
@@ -72,6 +76,6 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
-    <script src="routine.js?v=1.22" charset="utf-8"></script>
+    <script src="routine.js?v=1.23" charset="utf-8"></script>
   </body>
 </html>
