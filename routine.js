@@ -524,5 +524,6 @@ function deleteData() {
   }
 }
 
+// Add version status
 let version = $('#version').attr('src').split("v=")[1];
 $('.version-display').html('v' + version);
