@@ -1,18 +1,18 @@
-let data = null;
 let currentScreen = 'welcome';
 //let currentScreen = 'bodyline';
 //let currentScreen = 'strength';
 let exerciseNumber,
     seconds,
-    currentSets = [],
     currentExercise,
     setsCompleted = [],
     rest = 90,
+    //rest = 1,
     doneSound = new Audio('sound/243020__plasterbrain__game-start.ogg');
 doneSound.loop = false;
 
 
-const defaultTimer = 10;
+//const defaultTimer = 10;
+const defaultTimer = 1;
 const defaultReps = 5;
 const bodyline = [
   {
@@ -250,7 +250,12 @@ function setupBodylineExercise(i) {
     $('.bodyline .exercise-name').html(bodyline[i].name);
     currentExercise = bodyline[i].id;
     if (getLastSet(bodyline[i].id)) {
-      $('.bodyline .timer-value').html(getLastSet(bodyline[i].id).timeReps);
+      if (getLastSet(bodyline[i].id).completed) {
+        nextSet = getLastSet(bodyline[i].id).timeReps + 5;
+      } else {
+        nextSet = getLastSet(bodyline[i].id).timeReps;
+      }
+      $('.bodyline .timer-value').html(nextSet);
     } else {
       $('.bodyline .timer-value').html(defaultTimer);
     }
@@ -279,11 +284,10 @@ function setupStrengthExercise(i) {
       let lastProgression = getProgression(lastSets.progression);
       let html = 'Last workout:';
       html += '<span class="progression-name">' + lastProgression.name + '</span>';
-      for (var x = 0; x < lastSets.timeReps.length; x++) {
+      for (let x = 0; x < lastSets.timeReps.length; x++) {
         html += ' <span class="rep">' + lastSets.timeReps[x] + '</span>';
       }
-      $('.last-sets').html(html);
-      $('.last-sets').show();
+      $('.last-sets').html(html).show();
     } else {
       $('.last-sets').hide();
     }
@@ -320,27 +324,25 @@ function getSetNumber(exercise) {
 // Pass in exercise id
 function setupProgression(id) {
   let disableProgressionSelect = false;
-  if (setsCompleted[id]) {
+  if (typeof setsCompleted[id] !== 'undefined') {
     disableProgressionSelect = true;
   }
-  $('.strength .progression').html('');
   let progression = getProgressions(id);
   let html = '';
-  for (var i = 0; i < progression.length; i++) {
+  for (let i = 0; i < progression.length; i++) {
     html += '<option value="' + progression[i].id + '">' + progression[i].name + '</option>';
   }
-  $('.strength .progression').append(html);
-  $('.progression-message').show();
   if (disableProgressionSelect) {
-    $('.strength .progression').prop('disabled', 'disabled');
-    $('.strength .progression').addClass('disabled');
+    $('.strength .progression').prop('disabled', 'disabled').addClass('disabled').html(html).show();
     $('.progression-message').hide();
+  } else {
+    $('.strength .progression').prop('disabled', false).removeClass('disabled').html(html).show();
   }
 }
 
 // Get exercise from exercise id
 function getExerciseName(id) {
-  for (var i = 0; i < strength.length; i++) {
+  for (let i = 0; i < strength.length; i++) {
     if (id === strength[i].id) {
       return strength[i].name;
     }
@@ -349,7 +351,7 @@ function getExerciseName(id) {
 
 // Get progressions from exercise id
 function getProgressions(id) {
-  for (var i = 0; i < strength.length; i++) {
+  for (let i = 0; i < strength.length; i++) {
     if (id === strength[i].id) {
       return strength[i].progression;
     }
@@ -359,8 +361,8 @@ function getProgressions(id) {
 // Get progression from progression id
 function getProgression(id) {
   let progression = {};
-  for (var i = 0; i < strength.length; i++) {
-    $.each(strength[i].progression, function(x){
+  for (let i = 0; i < strength.length; i++) {
+    $.each(strength[i].progression, function(){
       if (this.id === id) {
         progression = this;
       }
@@ -377,9 +379,6 @@ function getProgression(id) {
 */
 function saveExercise(exercise, timeReps, completed, progression) {
   let newData = [];
-  if (!progression) {
-    let progression = 0;
-  }
   let exerciseData = {
     date: new Date().getTime(),
     timeReps: timeReps,
@@ -411,15 +410,15 @@ function calculateSets(previousSets) {
   let totalReps = 1;
   const sets = 3;
   let newSets = [];
-  for (var i = 0; i < previousSets.length; i++) {
+  for (let i = 0; i < previousSets.length; i++) {
     totalReps = totalReps + previousSets[i];
   }
   let averageReps = Math.floor(totalReps / sets);
   let leftOverReps = totalReps - (sets * averageReps);
-  for (var i = 0; i < sets; i++) {
+  for (let i = 0; i < sets; i++) {
     newSets.push(averageReps);
   }
-  for (var i = 0; i < leftOverReps; i++) {
+  for (let i = 0; i < leftOverReps; i++) {
     newSets[i] = newSets[i] + 1;
   }
   return newSets;
@@ -478,19 +477,15 @@ $('.bodyline .next-btn').click(function(){
 });
 
 $('.strength .next-btn').click(function(){
-  let progression = false;
+  progression = $('select.progression option:selected').val();
 
-  if (!$('select.progression').hasClass('disabled')) {
-    progression = $('select.progression option:selected').val();
-  }
   logSet(progression, parseInt($('.reps').html()));
 
   $(this).removeClass('show');
   $('.strength .timer-up, .strength .timer-down').hide();
   seconds = rest;
   let secondsLeft = seconds;
-  $('.strength .timer-value').removeClass('reps');
-  $('.strength .timer-value').html(rest);
+  $('.strength .timer-value').removeClass('reps').html(rest);
 
   let timer = setInterval(function(){
     if (secondsLeft > 1) {
@@ -528,3 +523,6 @@ function deleteData() {
     localStorage.clear();
   }
 }
+
+let version = $('#version').attr('src').split("v=")[1];
+$('.version-display').html('v' + version);
