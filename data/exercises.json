@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "name": "Assisted Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 2,
+    "name": "Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 3,
+    "name": "Bulgarian Split Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 4,
+    "name": "Beginner Shrimp Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 5,
+    "name": "Intermediate Shrimp Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 6,
+    "name": "Advanced Shrimp Squat",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 7,
+    "name": "Scapular Pulls",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 8,
+    "name": "Arch Hangs",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 9,
+    "name": "Negative Pull-ups",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 10,
+    "name": "Pull-ups",
+    "type": "strength",
+    "weight": false,
+    "reps": true
+  },
+  {
+    "id": 11,
+    "name": "Weighted Pull-ups",
+    "type": "strength",
+    "weight": true,
+    "reps": true
+  }
+]

@@ -1,6 +1,8 @@
+@import 'vars';
+
 .btn,
 button {
-  display: inline-flex;
+  display: flex;
   padding: 15px 20px;
   color: #fff;
   font-size: 1.1em;
@@ -10,4 +12,9 @@ button {
   line-height: 1.2;
   cursor: pointer;
   font-family: $body-font;
+  text-align: center;
+  justify-content: center;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }

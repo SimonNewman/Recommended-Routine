@@ -1,5 +1,5 @@
 {
-  "name": "routine",
+  "name": "bedrock",
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
@@ -9,14 +9,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
     "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-changed": "^3.2.0",
     "gulp-concat": "^2.6.1",
-    "gulp-rename": "^1.2.3",
-    "gulp-svgo": "^1.5.3",
-    "gulp-uglify": "^3.0.0",
+    "gulp-imagemin": "^4.1.0",
     "sass-lint": "^1.12.1"
   },
   "dependencies": {
@@ -24,7 +23,6 @@
     "gulp-autoprefixer": "^4.0.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.1",
-    "jquery": "^3.2.1",
-    "npm": "^6.1.0"
+    "jquery": "^3.2.1"
   }
 }

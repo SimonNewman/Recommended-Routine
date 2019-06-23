@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "name": "Recommended Routine",
+    "progressions": true,
+    "routine": [1,2,1,2,1,2]
+  }
+]

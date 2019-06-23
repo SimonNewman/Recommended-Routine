@@ -5,21 +5,53 @@
     <title>Recommended Routine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,500" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.25">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
     <div class="app">
 
-      <div class="version-display"></div>
-
       <div class="screen welcome">
         <h2>Welcome</h2>
+        <button onclick="viewRoutines()">Routines</button>
+        <button onclick="viewExercises()">Exercises</button>
+        <button onclick="viewProgressions()">Progressions</button>
         <button onclick="showData()">View Data</button>
-        <br>
         <button onclick="deleteData()">Delete Data</button>
         <div class="data"></div>
-        <button class="next-btn show" onclick="displayScreen('stretches')">Start Workout</button>
+        <!--button class="next-btn show" onclick="displayScreen('stretches')">Start Workout</button-->
+      </div>
+
+      <div class="screen routines">
+        <h2>Routines</h2>
+        <ul class="list"></ul>
+      </div>
+
+      <div class="screen routine">
+        <h2 id="routine-title"></h2>
+        <div class="content"></div>
+        <div class="list"></div>
+      </div>
+
+      <div class="screen exercises">
+        <h2>Exercises</h2>
+        <ul class="list"></ul>
+      </div>
+
+      <div class="screen exercise">
+        <h2 id="exercise-title"></h2>
+        <div class="content"></div>
+        <div class="list"></div>
+      </div>
+
+      <div class="screen progressions">
+        <h2>Progressions</h2>
+        <ul class="list"></ul>
+      </div>
+
+      <div class="screen progression">
+        <h2 id="progression-title"></h2>
+        <ul class="list"></ul>
       </div>
 
       <div class="screen stretches">
@@ -77,7 +109,8 @@
 
     </div>
 
+    <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
-    <script src="routine.js?v=1.25" charset="utf-8" id="version"></script>
+    <script src="routine.js?" charset="utf-8" id="version"></script>
   </body>
 </html>
