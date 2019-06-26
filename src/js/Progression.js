@@ -1,6 +1,6 @@
 function Progression(progression) {
-  this.id = progression.id;
-  this.name = progression.name;
+  this.id        = progression.id;
+  this.name      = progression.name;
   this.exercises = [];
 
   progression.exercises.forEach(id => {

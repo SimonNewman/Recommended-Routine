@@ -1,39 +1,46 @@
 function Exercise(exercise) {
-  this.id = exercise.id;
-  this.name = exercise.name;
-  this.type = exercise.type;
+  this.id     = exercise.id;
+  this.name   = exercise.name;
+  this.type   = exercise.type;
   this.weight = exercise.weight;
-  this.reps = exercise.reps;
+  this.reps   = exercise.reps;
 
-  /*
+  // Get history
   this.getHistory = function() {
-    return workoutHistory.reps.filter(workout => workout.exercise === this.id);
-  };
-  */
-
-  this.lastSets = function() {
-    let lastSets = workoutHistory.reps.find(workout => workout.exercise === this.id);
-    if (lastSets) {
-      return lastSets;
-    } else {
-      return false;
-    }
+    let history = [];
+    let sets = [];
+    workouts.forEach(workout => {
+      sets = workout.exercises.find(exercise => exercise.id === this.id);
+      if (sets != null) history.push(sets);
+    });
+    return history;
   };
 
+  // Get the last sets
+  this.getLastSets = function() {
+    return this.getHistory()[0];
+  };
+
+  // View exercise
   this.view = function() {
     $('.screen.exercise #exercise-title').html(this.name);
     let html = `
-      <p>Type: ${exercise.type}<br>
-      Reps: ${exercise.reps}</p>
+      <p>ID: ${this.id}<br>
+      Type: ${this.type}<br>
+      Reps: ${this.reps}</p>
     `;
     $('.screen.exercise .content').html(html);
-    /*
-    html = '';
-    this.getHistory().forEach(sets => {
-      html += sets.reps;
+    html = '<h3>History</h3>';
+    this.getHistory().forEach(history => {
+      html += '<div>';
+      history.sets.forEach(reps => {
+        html += `<span>${reps}</span>`;
+      });
+      html += '</div>';
     });
     $('.screen.exercise .list').html(html);
-    */
+
+    //console.log(this.calculateNextSets(3, 5, 8));
     displayScreen('exercise');
   };
 
@@ -41,8 +48,8 @@ function Exercise(exercise) {
     let promotion = false;
     let nextSets = [];
     let nextReps = 0;
-    if (this.lastSets()) {
-      nextReps = this.lastSets().reps.reduce((a, b) => a + b, 0) + 1;
+    if (this.getLastSets()) {
+      nextReps = this.getLastSets().sets.reduce((a, b) => a + b, 0) + 1;
     } else {
       for (let i = 0; i < sets; i++) {
         nextSets.push(minReps);

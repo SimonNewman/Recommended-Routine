@@ -1,14 +1,14 @@
 function Workout(routineId) {
   let routine = getRoutine(routineId);
 
-  this.id = routine.id;
-  this.name = routine.name;
+  this.routineId = routine.id;
+
+  this.getWorkouts = function() {
+    return workouts.filter(workout => workout.routineId === this.routineId);
+  };
 
   this.getLastWorkout = function() {
-    let workouts = workoutHistory.workouts.filter(workout => workout.id === this.id);
-    if (workouts.length) {
-      return workouts.slice(-1)[0];
-    }
+    return workouts.find(workout => workout.routineId === this.routineId);
   };
 
   this.getNextWorkout = function() {

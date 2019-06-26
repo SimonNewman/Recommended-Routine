@@ -5,38 +5,41 @@ function Exercise(exercise) {
   this.name = exercise.name;
   this.type = exercise.type;
   this.weight = exercise.weight;
-  this.reps = exercise.reps;
-  /*
-  this.getHistory = function() {
-    return workoutHistory.reps.filter(workout => workout.exercise === this.id);
-  };
-  */
+  this.reps = exercise.reps; // Get history
 
-  this.lastSets = function () {
+  this.getHistory = function () {
     var _this = this;
 
-    var lastSets = workoutHistory.reps.find(function (workout) {
-      return workout.exercise === _this.id;
+    var history = [];
+    var sets = [];
+    workouts.forEach(function (workout) {
+      sets = workout.exercises.find(function (exercise) {
+        return exercise.id === _this.id;
+      });
+      if (sets != null) history.push(sets);
     });
+    return history;
+  }; // Get the last sets
 
-    if (lastSets) {
-      return lastSets;
-    } else {
-      return false;
-    }
-  };
+
+  this.getLastSets = function () {
+    return this.getHistory()[0];
+  }; // View exercise
+
 
   this.view = function () {
     $('.screen.exercise #exercise-title').html(this.name);
-    var html = "\n      <p>Type: ".concat(exercise.type, "<br>\n      Reps: ").concat(exercise.reps, "</p>\n    ");
+    var html = "\n      <p>ID: ".concat(this.id, "<br>\n      Type: ").concat(this.type, "<br>\n      Reps: ").concat(this.reps, "</p>\n    ");
     $('.screen.exercise .content').html(html);
-    /*
-    html = '';
-    this.getHistory().forEach(sets => {
-      html += sets.reps;
+    html = '<h3>History</h3>';
+    this.getHistory().forEach(function (history) {
+      html += '<div>';
+      history.sets.forEach(function (reps) {
+        html += "<span>".concat(reps, "</span>");
+      });
+      html += '</div>';
     });
-    $('.screen.exercise .list').html(html);
-    */
+    $('.screen.exercise .list').html(html); //console.log(this.calculateNextSets(3, 5, 8));
 
     displayScreen('exercise');
   };
@@ -46,8 +49,8 @@ function Exercise(exercise) {
     var nextSets = [];
     var nextReps = 0;
 
-    if (this.lastSets()) {
-      nextReps = this.lastSets().reps.reduce(function (a, b) {
+    if (this.getLastSets()) {
+      nextReps = this.getLastSets().sets.reduce(function (a, b) {
         return a + b;
       }, 0) + 1;
     } else {
@@ -179,7 +182,6 @@ function Routine(routine) {
   this.view = function () {
     var html = '';
     $('.screen.routine #routine-title').html(this.name);
-    console.log(this.routine);
     $('.screen.routine .list').html(html);
     displayScreen('routine');
   };
@@ -193,6 +195,8 @@ function Routine(routine) {
       routine.push(getProgression(id));
     });
   };
+
+  this.getExercises = function () {};
 
   this.getNextWorkout = function () {
     var nextWorkout = new Workout(this.id).getNextWorkout();
@@ -211,7 +215,6 @@ function getRoutine(id) {
 function viewRoutine(id) {
   var routine = getRoutine(id);
   routine.view();
-  console.log(routine.getNextWorkout());
 } // View all routines
 
 
@@ -227,19 +230,22 @@ function viewRoutines() {
 
 function Workout(routineId) {
   var routine = getRoutine(routineId);
-  this.id = routine.id;
-  this.name = routine.name;
+  this.routineId = routine.id;
 
-  this.getLastWorkout = function () {
+  this.getWorkouts = function () {
     var _this = this;
 
-    var workouts = workoutHistory.workouts.filter(function (workout) {
-      return workout.id === _this.id;
+    return workouts.filter(function (workout) {
+      return workout.routineId === _this.routineId;
     });
+  };
 
-    if (workouts.length) {
-      return workouts.slice(-1)[0];
-    }
+  this.getLastWorkout = function () {
+    var _this2 = this;
+
+    return workouts.find(function (workout) {
+      return workout.routineId === _this2.routineId;
+    });
   };
 
   this.getNextWorkout = function () {
@@ -283,13 +289,6 @@ db.put(aWorkout, function callback(err, result) {
   }
 });
 */
-
-db.allDocs({
-  include_docs: true,
-  descending: true
-}, function (err, doc) {
-  console.log(doc.rows);
-});
 
 function showData() {
   $('.data').html(JSON.stringify(localStorage));
@@ -345,7 +344,6 @@ $.ajax({
       var progression = new Progression(progressionData);
       progressions.push(progression);
     });
-    console.log(progressions);
   },
   error: function error() {}
 }); // Get Routines
@@ -363,25 +361,19 @@ $.ajax({
     });
   },
   error: function error() {}
-}); // Get History
-// TODO
+}); // Get Workouts
 
-/*
-let workoutHistory = [];
-$.ajax({
-  type: 'GET',
-  cache: false,
-  dataType: 'json',
-  url: 'data/history.json',
-  success: (result) => {
-    workoutHistory = result;
-  },
-  error: (error) => {
-
-  }
-});
-*/
-// Display screen
+var workouts = [];
+db.allDocs({
+  include_docs: true,
+  attachments: true
+}).then(function (result) {
+  result.rows.forEach(function (log) {
+    workouts.push(log.doc);
+  });
+})["catch"](function (err) {
+  console.log(err);
+}); // Display screen
 
 function displayScreen(screen) {
   $('.screen:not(.' + screen + ')').hide();
@@ -390,4 +382,62 @@ function displayScreen(screen) {
 }
 
 displayScreen(currentScreen);
+/*
+// Update workout
+db.get('2019-06-23T15:52:57.677Z').then(function(doc) {
+  return db.put({
+    _id: '2019-06-23T15:52:57.677Z',
+    _rev: '5-454d64291a6a9996a414e9ceb8e8ddbc',
+    routineId: 1,
+    exercises: [
+      {
+        id: 3,
+        sets: [3,4,4]
+      },
+      {
+        id: 8,
+        sets: [5,5,5]
+      }
+    ]
+  });
+}).then(function(response) {
+  // handle response
+}).catch(function (err) {
+  console.log(err);
+});
+*/
+
+/*
+// Example create
+db.put({
+  _id: new Date().toJSON(),
+  routineId: 1,
+  exercises: [
+    {
+      id: 3,
+      sets: [3,2,4]
+    },
+    {
+      id: 8,
+      sets: [4,5,5]
+    }
+  ]
+}).then(function (response) {
+  // handle response
+}).catch(function (err) {
+  console.log(err);
+});
+*/
+
+var startTime, endTime;
+
+function start() {
+  startTime = new Date();
+}
+
+function end() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime;
+  console.log(timeDiff + " ms");
+}
 //# sourceMappingURL=routine.js.map

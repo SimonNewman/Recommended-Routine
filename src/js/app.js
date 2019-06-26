@@ -38,9 +38,8 @@ db.put(aWorkout, function callback(err, result) {
   }
 });
 */
-db.allDocs({include_docs: true, descending: true}, function(err, doc) {
-  console.log(doc.rows);
-});
+
+
 
 function showData() {
   $('.data').html(JSON.stringify(localStorage));
@@ -98,7 +97,6 @@ $.ajax({
       let progression = new Progression(progressionData);
       progressions.push(progression);
     });
-    console.log(progressions);
   },
   error: function() {
 
@@ -123,23 +121,18 @@ $.ajax({
   }
 });
 
-// Get History
-// TODO
-/*
-let workoutHistory = [];
-$.ajax({
-  type: 'GET',
-  cache: false,
-  dataType: 'json',
-  url: 'data/history.json',
-  success: (result) => {
-    workoutHistory = result;
-  },
-  error: (error) => {
-
-  }
+// Get Workouts
+let workouts = [];
+db.allDocs({
+  include_docs: true,
+  attachments: true
+}).then((result) => {
+  result.rows.forEach((log) => {
+    workouts.push(log.doc);
+  });
+}).catch(function (err) {
+  console.log(err);
 });
-*/
 
 // Display screen
 function displayScreen(screen) {
@@ -149,3 +142,62 @@ function displayScreen(screen) {
 }
 
 displayScreen(currentScreen);
+
+/*
+// Update workout
+db.get('2019-06-23T15:52:57.677Z').then(function(doc) {
+  return db.put({
+    _id: '2019-06-23T15:52:57.677Z',
+    _rev: '5-454d64291a6a9996a414e9ceb8e8ddbc',
+    routineId: 1,
+    exercises: [
+      {
+        id: 3,
+        sets: [3,4,4]
+      },
+      {
+        id: 8,
+        sets: [5,5,5]
+      }
+    ]
+  });
+}).then(function(response) {
+  // handle response
+}).catch(function (err) {
+  console.log(err);
+});
+*/
+
+/*
+// Example create
+db.put({
+  _id: new Date().toJSON(),
+  routineId: 1,
+  exercises: [
+    {
+      id: 3,
+      sets: [3,2,4]
+    },
+    {
+      id: 8,
+      sets: [4,5,5]
+    }
+  ]
+}).then(function (response) {
+  // handle response
+}).catch(function (err) {
+  console.log(err);
+});
+*/
+
+let startTime, endTime;
+
+function start() {
+  startTime = new Date();
+}
+
+function end() {
+  endTime = new Date();
+  let timeDiff = endTime - startTime;
+  console.log(timeDiff + " ms");
+}
